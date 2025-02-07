@@ -42,6 +42,7 @@ def quadrotor_example():
     # Set up a simulator to run this diagram
     simulator = Simulator(diagram)
     simulator.set_target_realtime_rate(1.0)
+    input("Press enter once meshcat has finished initializing and you're ready")
 
     target_position = np.array([0, 0, 1])
     target_velocity = np.array([0, 0, 0])
