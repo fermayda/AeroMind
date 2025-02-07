@@ -7,11 +7,14 @@ from pydrake.examples import QuadrotorPlant, QuadrotorGeometry, StabilizingLQRCo
 from pydrake.gym._drake_gym_env import DrakeGymEnv
 import gymnasium as gym
 from tqdm import tqdm
+from torch.utils.tensorboard import SummaryWriter
 
 # Quadrotor LQR example notebook:
 # https://deepnote.com/workspace/Underactuated-2ed1518a-973b-4145-bd62-1768b49956a8/project/096cffe7-416e-4d51-a471-5fd526ec8fab/notebook/quadrotor-ac8fa093ca5a4894a618ada316f2750b
 
 meshcat = StartMeshcat()
+
+writer = SummaryWriter()
 
 def quadrotor_example():
     builder = DiagramBuilder()
@@ -68,8 +71,9 @@ def quadrotor_example():
     controller = StabilizingLQRController(dummy_plant, target_position)
     controller_context = controller.CreateDefaultContext()
 
-    for _ in range(5):
+    for episode_no in range(5):
         print("Starting episode")
+        cumulative_reward = 0
         gym_env.reset()
         action = np.zeros(4)
         for _ in tqdm(range(1000)):
@@ -78,7 +82,8 @@ def quadrotor_example():
                 break
             controller.get_input_port(0).FixValue(controller_context, observation)
             action = controller.get_output_port(0).Eval(controller_context)
-        input("Press Enter to start the next episode...")
+            cumulative_reward += reward
+        writer.add_scalar("reward", cumulative_reward, episode_no)
 
 
 quadrotor_example()
