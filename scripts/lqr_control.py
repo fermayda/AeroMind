@@ -17,7 +17,7 @@ def quadrotor_example():
     target_position = np.array([0, 0, 1])
     target_velocity = np.array([0, 0, 0])
 
-    env = QuadrotorEnv(meshcat, target_position, target_velocity)
+    env = QuadrotorEnv.build(meshcat, target_position, target_velocity)
 
     dummy_plant = QuadrotorPlant()
     controller = StabilizingLQRController(dummy_plant, target_position)
