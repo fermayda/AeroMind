@@ -13,7 +13,7 @@ meshcat = StartMeshcat()
 
 writer = SummaryWriter()
 
-experiment_name='quadrotor_ppo_default_straighthover'
+experiment_name='drake_quadrotor_ppo_default_straighthover'
 experiment_logdir = f"runs/{experiment_name}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
 
 def quadrotor_example():
