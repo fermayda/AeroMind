@@ -4,6 +4,7 @@ from torch.utils.tensorboard import SummaryWriter
 from pydrake.all import StartMeshcat
 from cs175.quadrotor_env import QuadrotorEnv, QuadrotorPlant
 from stable_baselines3 import PPO
+from stable_baselines3.common.monitor import Monitor
 from datetime import datetime
 
 # Quadrotor LQR example notebook:
@@ -22,6 +23,7 @@ def quadrotor_example():
     target_velocity = np.array([0, 0, 0])
 
     env = QuadrotorEnv.build(meshcat, target_position, target_velocity)
+    env = Monitor(env)
 
     model = PPO("MlpPolicy", env, verbose=1, tensorboard_log=experiment_logdir)
     model.learn(total_timesteps=1_000_000)
