@@ -14,14 +14,18 @@ Our project focuses on stabilizing a quadrotor using Reinforcement Learning with
 
 The system follows a structured RL pipeline:
 
-### 1 Evironment setup
+### 1 - Environment setup
 
-- A quadrotor simulation environment using PyFlyt
+- Quadrotor simulation environments using pyflyt amd pydrake
 - Observation space: position, velocity, angular velocity
 - Action space: motor thrusts
 - Reward function: balancing stability, energy efficiency, and goal tracking
 
-### 2 Control algorithms
+![pyflyt](docs/assets/images/pyflytex.png)
+
+![pydrake](docs/assets/images/image4.png)
+
+### 2 - Control algorithms
 
 - PPO 
    - Implemented using stable-baselines3
@@ -30,7 +34,7 @@ The system follows a structured RL pipeline:
    - Acts as a baseline for performance comparison
    - Provides a stable reference trajectory for PPO
 
-### 3 Enchancements Implemented
+### 3 - Enchancements Implemented
 
  - Code refactoring
     - Extracted common functions into utils.py for better modularity
@@ -65,6 +69,15 @@ We evaluate our approach using both qualitative and quantitative metrics:
 - PPO has shown promising stabilization but struggles with precise hovering.
 - LQR provides better immediate stability but lacks adaptability
 - Tuning is in progress to improve PPO convergence
+- pydrake seems to run faster but results are less promising so far. Our LQR controller is functioning and uses meshcat for visualization
+- pyflyt runs slower, but the results are more promising so far, (the training loss at least decreases). It also allows us to save the renderings as RGB arrays, similar to the environments from exercise 2
+
+![Training Loss for both environments](docs/assets/images/image6.png)
+
+![Pyflyt training loss with default hyperparams](docs/assets/images/image2.png)
+
+![Pyflyt training reward with default hyperparams](docs/assets/images/image2.png)
+
 
 ## Remaining Goals and Challenges
 
