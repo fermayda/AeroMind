@@ -21,9 +21,9 @@ The system follows a structured RL pipeline:
 - Action space: motor thrusts
 - Reward function: balancing stability, energy efficiency, and goal tracking
 
-![pyflyt](docs/assets/images/pyflytex.png)
+![pyflyt](assets/images/pyflytex.png)
 
-![pydrake](docs/assets/images/image4.png)
+![pydrake](assets/images/image4.png)
 
 ### 2 - Control algorithms
 
