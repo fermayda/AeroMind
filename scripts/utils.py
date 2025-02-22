@@ -44,7 +44,15 @@ def train_ppo(env, config, logdir):
         gamma=config["gamma"],
         device=config["device"],
     )
-    model.learn(total_timesteps=config["total_timesteps"])
+    checkpoint_dr = "checkpoints"
+    os.makedirs(checkpoint_dr, exist_ok=True)
+
+    for step in range(0, config["total_timesteps"], 100000):
+        model.learn(total_timesteps=100000, reset_num_timesteps=False)
+        check_pth = os.path.join(checkpoint_dr, f"ppo_checkpoints_{step+100000}.zip")
+        model.save(checkpoint_path)
+        print(f"checkpoint saved at: {checkpoint_path}")
+
     model.save("ppo_quadrotor_stabilize")
     return model
 
