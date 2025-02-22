@@ -106,3 +106,7 @@ Challenges
 - Optuna: Hyperparameter tuning
 - Tensorboard: Training visualization
 - Github and Stackoverflow: Documentation and troubleshooting
+
+## Video
+
+[Watch Video](docs/assets/videos/projectreport.mp4)
