@@ -72,11 +72,11 @@ We evaluate our approach using both qualitative and quantitative metrics:
 - pydrake seems to run faster but results are less promising so far. Our LQR controller is functioning and uses meshcat for visualization
 - pyflyt runs slower, but the results are more promising so far, (the training loss at least decreases). It also allows us to save the renderings as RGB arrays, similar to the environments from exercise 2
 
-![Training Loss for both environments](docs/assets/images/image6.png)
+![Training Loss for both environments](assets/images/image6.png)
 
-![Pyflyt training loss with default hyperparams](docs/assets/images/image2.png)
+![Pyflyt training loss with default hyperparams](assets/images/image2.png)
 
-![Pyflyt training reward with default hyperparams](docs/assets/images/image2.png)
+![Pyflyt training reward with default hyperparams](assets/images/image2.png)
 
 
 ## Remaining Goals and Challenges
@@ -109,4 +109,4 @@ Challenges
 
 ## Video
 
-[Watch Video](docs/assets/videos/projectreport.mp4)
+[Watch Video](assets/videos/projectreport.mp4)
