@@ -1,6 +1,7 @@
 import gymnasium as gym
 import numpy as np
 import yaml
+import optuna 
 from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import SubprocVecEnv, DummyVecEnv
 from stable_baselines3.common.monitor import Monitor
@@ -46,3 +47,43 @@ def train_ppo(env, config, logdir):
     model.learn(total_timesteps=config["total_timesteps"])
     model.save("ppo_quadrotor_stabilize")
     return model
+
+def objective(trial, env, logdir):
+    params = {
+        "learning_rate": trial.suggest_loguniform("learning_rate", 1e-5, 1e-3),
+        "n_steps": trial.suggest_int("n_steps", 512, 4096, step=512),
+        "batch_size": trial.suggest_categorical("batch_size", [32, 64, 128, 256]),
+        "gamma": trial.suggest_uniform("gamma", 0.9, 0.999),
+    }
+
+    model = PPO(
+        "MlpPolicy",
+        env,
+        verbose=0,
+        tensorboard_log=logdir,
+        **params,
+    )
+    model.learn(total_timesteps=100000)
+    mean_reward = evaluate_model(model, env)
+    return mean_reward
+
+
+def evaluate_model(model, env, n_eval_episodes=5):
+    total_reward = 0
+    for _ in range(n_eval_episodes):
+        obs = env.reset()
+        done = False
+        while not done:
+            action, _ = model.predict(obs, deterministic=True)
+            obs, reward, done, _ = env.step(action)
+            total_reward += reward
+    return total_reward / n_eval_episodes
+
+
+def tune_hyperparameters(env, logdir, n_trials=20):
+    study = optuna.create_study(direction="maximize")
+    study.optimize(lambda trial: objective(trial, env, logdir), n_trials=n_trials)
+
+    best_params = study.best_params
+    print(f"best hyperparameters: {best_params}")
+    return best_params
