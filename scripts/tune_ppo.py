@@ -19,3 +19,5 @@ import yaml
 config.update(params)
 with open("config.yaml", "w") as f:
     yaml.dump({"ppo": config}, f)
+
+print("updated config.yaml with better parameters")
