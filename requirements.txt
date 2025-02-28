@@ -2,3 +2,4 @@ gymnasium
 drake
 torch
 tensorboard
+optuna
