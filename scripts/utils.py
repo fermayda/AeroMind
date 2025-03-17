@@ -33,7 +33,7 @@ def initialize_logging(experiment_name):
 
 
 def train_ppo(env, config, logdir):
-        model = PPO(
+    model = PPO(
         "MlpPolicy",
         env,
         verbose=1,
