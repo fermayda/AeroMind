@@ -25,10 +25,11 @@ class QuadrotorEnv:
         # Set up visualization in MeshCat
         scene_graph = builder.AddSystem(SceneGraph())
         QuadrotorGeometry.AddToBuilder(builder, plant.get_output_port(0), scene_graph)
-        meshcat.Delete()
-        meshcat.ResetRenderMode()
-        meshcat.SetProperty("/Background", "visible", False)
-        MeshcatVisualizer.AddToBuilder(builder, scene_graph, meshcat)
+        if meshcat is not None:
+            meshcat.Delete()
+            meshcat.ResetRenderMode()
+            meshcat.SetProperty("/Background", "visible", False)
+            MeshcatVisualizer.AddToBuilder(builder, scene_graph, meshcat)
         # end setup for visualization
 
         diagram = builder.Build()
