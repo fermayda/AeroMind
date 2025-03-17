@@ -80,6 +80,8 @@ class TensorboardVideoRecorder(VecEnvWrapper):
             video = np.clip(255 * video, 0, 255).astype(np.uint8)
         try:
             T, H, W, C = video.shape
+            if C == 4:
+                video = video[:,:,:,:3]
             summary = tf1.Summary()
             image = tf1.Summary.Image(height=H, width=W, colorspace=C)
             image.encoded_image_string = self._encode_gif(list(video), self._fps)
