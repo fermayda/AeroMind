@@ -49,7 +49,7 @@ class QuadrotorEnv:
 
         return DrakeGymEnv(
             simulator, 
-            0.001, 
+            1/40, 
             gym.spaces.Box(low=0, high=100, shape=(4,)),
             gym.spaces.Box(low=-100, high=100, shape=(12,)),
             reward_fn,
