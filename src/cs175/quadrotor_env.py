@@ -10,7 +10,7 @@ import numpy as np
 
 class QuadrotorEnv:
     @staticmethod
-    def build(meshcat, target_position: np.ndarray, target_velocity: np.ndarray):
+    def build(meshcat, target_position: np.ndarray, target_velocity: np.ndarray, realtime_rate=-1):
         builder = DiagramBuilder()
 
         plant = builder.AddSystem(QuadrotorPlant())
@@ -30,14 +30,14 @@ class QuadrotorEnv:
             meshcat.ResetRenderMode()
             meshcat.SetProperty("/Background", "visible", False)
             MeshcatVisualizer.AddToBuilder(builder, scene_graph, meshcat)
+            input("Press enter once meshcat has finished initializing and you're ready")
         # end setup for visualization
 
         diagram = builder.Build()
 
         # Set up a simulator to run this diagram
         simulator = Simulator(diagram)
-        simulator.set_target_realtime_rate(1.0)
-        input("Press enter once meshcat has finished initializing and you're ready")
+        simulator.set_target_realtime_rate(realtime_rate)
 
 
         def reward_fn(system: System, context: Context):
@@ -49,9 +49,9 @@ class QuadrotorEnv:
 
         return DrakeGymEnv(
             simulator, 
-            1/40, 
-            gym.spaces.Box(low=0, high=100, shape=(4,)),
-            gym.spaces.Box(low=-100, high=100, shape=(12,)),
+            1/100, 
+            gym.spaces.Box(low=-300, high=300, shape=(4,)),
+            gym.spaces.Box(low=-300, high=300, shape=(12,)),
             reward_fn,
             PLANT_INPUT_NAME,
             PLANT_OUTPUT_NAME,
