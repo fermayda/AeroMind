@@ -44,8 +44,8 @@ class QuadrotorEnv:
             state = system.get_output_port(0).Eval(context) 
             # print(state.shape, state[:3])
             pos_err = np.linalg.norm(state[:3] - target_position)
-            vel_err = np.linalg.norm(state[3:6] - target_velocity)
-            return -pos_err - vel_err
+            # vel_err = np.linalg.norm(state[3:6] - target_velocity)
+            return -pos_err
 
         return DrakeGymEnv(
             simulator, 
