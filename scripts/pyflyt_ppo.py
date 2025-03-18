@@ -28,12 +28,12 @@ def make_env():
 env = make_vec_env(make_env, n_envs=1)
 # Define a trigger function (e.g., record a video every 20,000 steps)
 
-video_trigger = lambda step: step % 2e4 == 0 or step == 10
-env = TensorboardVideoRecorder(env=env,
-                                video_trigger=video_trigger,
-                                video_length=500,
-                                fps=30,
-                                tb_log_dir=experiment_logdir)
+# video_trigger = lambda step: step % 2e4 == 0 or step == 10
+# env = TensorboardVideoRecorder(env=env,
+#                                 video_trigger=video_trigger,
+#                                 video_length=500,
+#                                 fps=30,
+#                                 tb_log_dir=experiment_logdir)
 
 model = PPO("MlpPolicy", env, tensorboard_log=experiment_logdir, device='cpu')
 model.learn(total_timesteps=1_000_000)
