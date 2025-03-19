@@ -22,10 +22,10 @@ writer = SummaryWriter()
 
 # env = make_vec_env(lambda: FlattenWaypointEnv(gymnasium.make("PyFlyt/QuadX-Waypoints-v3", render_mode='human'), context_length=1), n_envs=1)
 
-env = QuadrotorEnv.build(meshcat, np.zeros(3), np.zeros(3), realtime_rate=1)
+env = QuadrotorEnv.build(meshcat, np.array([0,0,1]), np.zeros(3), realtime_rate=1)
 
 
-model = PPO.load("drake_quadrotor_stabilize_working", device='cpu')
+model = PPO.load("drake_quadrotor_stabilize_ascending", device='cpu')
 rewards = []
 for episode in range(10):
     observation, info = env.reset()
