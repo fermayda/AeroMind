@@ -40,8 +40,9 @@ env = make_vec_env(make_env, n_envs=1)
 #                                 fps=30,
 #                                 tb_log_dir=experiment_logdir)
 
-model = PPO("MlpPolicy", env, tensorboard_log=experiment_logdir, device='cpu')
 if load_val is not None:
-    model.load(load_val)
+    model = PPO.load(load_val, env, tensorboard_log=experiment_logdir, device='cpu')
+else:
+    model = PPO("MlpPolicy", env, tensorboard_log=experiment_logdir, device='cpu')
 model.learn(total_timesteps=1_000_000)
 model.save(f'{experiment_logdir}/weights')

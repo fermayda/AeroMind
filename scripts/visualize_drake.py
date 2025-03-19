@@ -25,7 +25,7 @@ writer = SummaryWriter()
 env = QuadrotorEnv.build(meshcat, np.zeros(3), np.zeros(3), realtime_rate=1)
 
 
-model = PPO.load("drake_quadrotor_stabilize_working")
+model = PPO.load("drake_quadrotor_stabilize_working", device='cpu')
 rewards = []
 for episode in range(10):
     observation, info = env.reset()
