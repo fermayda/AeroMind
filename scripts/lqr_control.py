@@ -14,29 +14,42 @@ writer = SummaryWriter()
 
 def quadrotor_example():
 
-    target_position = np.array([0, 0, 1])
+    target_position = np.array([0, 0, 0])
     target_velocity = np.array([0, 0, 0])
 
-    env = QuadrotorEnv.build(meshcat, target_position, target_velocity)
+    env = QuadrotorEnv.build(None, target_position, target_velocity)
 
     dummy_plant = QuadrotorPlant()
     controller = StabilizingLQRController(dummy_plant, target_position)
     controller_context = controller.CreateDefaultContext()
 
+    actions = []
+    states = []
     for episode_no in range(5):
         print("Starting episode")
         cumulative_reward = 0
         env.reset()
         action = np.zeros(4)
-        for _ in tqdm(range(1000)):
+        for _ in tqdm(range(10_000)):
             observation, reward, terminated, truncated, info = env.step(action)
-            if terminated:
+            states.append(observation)
+            if terminated or truncated:
                 break
             controller.get_input_port(0).FixValue(controller_context, observation)
             action = controller.get_output_port(0).Eval(controller_context)
+            # action = np.random.random(4)
+            # action = np.zeros(4)
+            actions.append(action)
             cumulative_reward += reward
         writer.add_scalar("reward", cumulative_reward, episode_no)
+        print(cumulative_reward)
 
+    actions = np.array(actions)
+    states = np.array(states)
+    print(actions.min())
+    print(actions.max())
+    print(states.min())
+    print(states.max())
 
 quadrotor_example()
 

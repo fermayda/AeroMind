@@ -2,7 +2,7 @@ import gymnasium as gym
 
 from pydrake.all import (
     DiagramBuilder, SceneGraph, Simulator, System, Context,
-    MeshcatVisualizer 
+    MeshcatVisualizer, EventStatus
 )
 from pydrake.examples import QuadrotorPlant, QuadrotorGeometry
 from pydrake.gym._drake_gym_env import DrakeGymEnv
@@ -52,6 +52,17 @@ class QuadrotorEnv:
             
             # combine position, yaw rate, and roll/pitch error
             return 1-(pos_err + 0.01*yaw_rate**2 + np.linalg.norm(state[6:8]))
+
+        def monitor_fn(context: Context) -> EventStatus:
+            system = simulator.get_system()
+            state = system.get_output_port(0).Eval(context)
+            if np.linalg.norm(state[:3]) > 3:
+                return EventStatus.ReachedTermination(system, 'too far from origin')
+            if state[3]<-1:
+                return EventStatus.ReachedTermination(system, 'height too low')
+            return EventStatus.DidNothing()
+
+        simulator.set_monitor(monitor_fn)
 
         return DrakeGymEnv(
             simulator, 
