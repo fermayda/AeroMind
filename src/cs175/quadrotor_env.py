@@ -52,9 +52,14 @@ class QuadrotorEnv:
             
             # combine position, yaw rate, and roll/pitch error
             return 1-(pos_err + 0.01*yaw_rate**2 + np.linalg.norm(state[6:8]))
-
+        
         def monitor_fn(context: Context) -> EventStatus:
             system = simulator.get_system()
+            steps = simulator.get_num_steps_taken()
+            if steps > 5000:
+                # TODO: add a wrapper around Drake's gym env helper to turn on the truncated flag
+                # currently there is no way of differentiating this from termination.
+                return EventStatus.ReachedTermination(system, 'over 5000 timesteps in episode')
             state = system.get_output_port(0).Eval(context)
             if np.linalg.norm(state[:3]) > 3:
                 return EventStatus.ReachedTermination(system, 'too far from origin')

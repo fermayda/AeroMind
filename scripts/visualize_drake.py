@@ -32,10 +32,11 @@ for episode in range(10):
     done = False
     episode_reward = 0
 
-    for _ in range()
+    while not done:
         action, _ = model.predict(observation)
         observation, reward, terminated, truncated, info = env.step(action)
         episode_reward += reward
+        done = truncated or terminated
     
     rewards.append(episode_reward)
 
