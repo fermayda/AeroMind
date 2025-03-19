@@ -11,6 +11,7 @@ import numpy as np
 class QuadrotorEnv:
     @staticmethod
     def build(meshcat, target_position: np.ndarray, target_velocity: np.ndarray, realtime_rate=-1):
+        # State is x ,y , z, roll, pitch, yaw + velocities.
         builder = DiagramBuilder()
 
         plant = builder.AddSystem(QuadrotorPlant())
@@ -44,8 +45,13 @@ class QuadrotorEnv:
             state = system.get_output_port(0).Eval(context) 
             # print(state.shape, state[:3])
             pos_err = np.linalg.norm(state[:3] - target_position)
-            # vel_err = np.linalg.norm(state[3:6] - target_velocity)
-            return -pos_err
+
+
+            yaw_rate = state[11]
+
+            
+            # combine position, yaw rate, and roll/pitch error
+            return 1-(pos_err + 0.01*yaw_rate**2 + np.linalg.norm(state[6:8]))
 
         return DrakeGymEnv(
             simulator, 
