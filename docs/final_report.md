@@ -6,7 +6,7 @@ title: Final Report
 # Final Report
 
 ## Video
-![Video](assets/videos/video1521424387.mp4)
+[Video](assets/videos/video1521424387.mp4)
 
 ## Project Summary
 
@@ -58,8 +58,8 @@ Reward shaping and termination conditions
 
 Waypoint Tasks: Initial experiments include placeholder environment stubs and reward modifications based on L2 distance to dynamic waypoints.
 
-![PPO vs LQR performance](assets/videos/drake_quadrotor_hover.mp4)
-![PPO vs LQR performance](assets/videos/drake_quadrotor_lqr.mp4)
+[PPO vs LQR performance](assets/videos/drake_quadrotor_hover.mp4)
+[PPO vs LQR performance](assets/videos/drake_quadrotor_lqr.mp4)
 
 PPO policy generalizes better from offset starts compared to LQR (PPO on left, LQR on right)
 
