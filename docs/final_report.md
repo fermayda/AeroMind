@@ -6,7 +6,7 @@ title: Final Report
 # Final Report
 
 ## Video
-TODO
+![Video](assets/videos/video1521424387.mp4)
 
 ## Project Summary
 
@@ -44,7 +44,7 @@ Termination: Exiting a radius-3 dome or 5000 steps.
 Hyperparameter tuning with Optuna explored optimal n_steps, batch_size, gamma, and learning_rate, however, lead to minimal results.
 
 ![Reward and Termination Conditions](assets/images/reward_termination.png)
-Reward shaping adn termination conditions
+Reward shaping and termination conditions
 
 ## Evaluation
 
@@ -58,8 +58,8 @@ Reward shaping adn termination conditions
 
 Waypoint Tasks: Initial experiments include placeholder environment stubs and reward modifications based on L2 distance to dynamic waypoints.
 
-![PPO vs LQR performance](assets/videos/drake_quadrotor_hover.png)
-![PPO vs LQR performance](assets/videos/drake_quadrotor_lqr.png)
+![PPO vs LQR performance](assets/videos/drake_quadrotor_hover.mp4)
+![PPO vs LQR performance](assets/videos/drake_quadrotor_lqr.mp4)
 
 PPO policy generalizes better from offset starts compared to LQR (PPO on left, LQR on right)
 
