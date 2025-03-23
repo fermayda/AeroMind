@@ -10,81 +10,62 @@ TODO
 
 ## Project Summary
 
-Our project focuses on stabilizing a quadrotor using Reinforcement Learning with PPO (Proximal Policy Optimization). We integrate PyDrake and PyFlyt for simulation, utilizing Stable-Baselines3 for training. The goal is to train an RL agent to control the quadrotor efficently while incorporating traditional control methods like LQR for stability before PPO takes over. We aim to enhance performance through hyperparameter tuning, vectorized environments, and robust evaluation. 
+Our project explores reinforcement learning (RL) for quadrotor stabilization using two physics engines: Drake and PyFlyt. The primary goal was to train a PPO policy to maintain stable hover and potentially lay the foundation for waypoint navigation. This project required handling complex state observations, reward shaping, environment tuning, and attempted hyperparameter optimization.
+
+We successfully solved the hover task using Stable-Baselines3 PPO, with experiments in both physics environments. Our final policy stabilizes the quadrotor from multiple initial conditions. We also attempted working towards dynamic waypoint-following
+
+
+![State Space Diagram](assets/images/state_space.png)
+![State Space Diagram](assets/images/state_space1.png)
+
+12D state space: position, velocity, rotation, angular velocity
 
 ## Approaches
 
-The system follows a structured RL pipeline:
 
-### 1 - Environment setup
+### Bsaelines
 
-- Quadrotor simulation environments using pyflyt amd pydrake
-- Observation space: position, velocity, angular velocity
-- Action space: motor thrusts
-- Reward function: balancing stability, energy efficiency, and goal tracking
+LQR Controller - Tested as a traditional control baseline in Drake
+Random Policy - Used to compare against learned PPO policies.
 
-![pyflyt](assets/images/pyflytex.png){: style="width:300px;"}
+### Proposed RL approach
 
-![pydrake](assets/images/image4.png){: style="width:300px;" }
+- PPO with 12D state observation (position, velocity, rotation, angular velocity).
 
-### 2 - Control algorithms
+Action space:
 
-- PPO 
-   - Implemented using stable-baselines3
-   - Trains a policy to stabilize the quadrotor
- - LQR 
-   - Acts as a baseline for performance comparison
-   - Provides a stable reference trajectory for PPO
+-- Collective thrust + angular rates (PyFlyt)
+-- Individual motor thrusts (Drake)
 
-### 3 - Enchancements Implemented
+Reward: Negative L2 distance to target + yaw rate penalty.
 
- - Code refactoring
-    - Extracted common functions into utils.py for better modularity
-    - shifted hyperparameters to config.yaml for easier tuning
+Termination: Exiting a radius-3 dome or 5000 steps.
 
- - Training improvements
-   - Vectorized environments to accelerate learning
-   - Checkpointing every 100,000 steps
-   - Exception handling to improve robustness.
+Hyperparameter tuning with Optuna explored optimal n_steps, batch_size, gamma, and learning_rate, however, lead to minimal results.
 
- - Hyperparameter optimization
-   - Integrated optuna for automatic tuning of learning rates, gamma, etc.
+![Reward and Termination Conditions](assets/images/reward_termination.png)
+Reward shaping adn termination conditions
 
 ## Evaluation
 
-We evaluate our approach using both qualitative and quantitative metrics:
+- PPO solved the PyFlyt hover task in under 1M timesteps.
 
-### Quantitative Metrics
+- Drake PPO solved after adding termination conditions.
 
-- Reward progression: tracks training stability and policy improvement
-- Trajectory tracking: measures deviation from a reference trajectory
-- Energy consumption: evaluates power efficiency in control
+- Evaluation includes TensorBoard metrics, trajectory visualizations, and video rollouts.
 
-### Qualitative 
+- Comparison between PPO Policy and LQR Controller shows PPO generalizes better from offset starts.
 
-- Visualization with meshcat: real-time simulation of quadrotor behavior
-- TensorBoard logging: monitors reward trends, loss curves, and policy updates
-- Failure mode analysis: identifies scenarios where RL fails to stabilize the drone
+Waypoint Tasks: Initial experiments include placeholder environment stubs and reward modifications based on L2 distance to dynamic waypoints.
 
-#### Current Results
+![PPO vs LQR performance](assets/videos/drake_quadrotor_hover.png)
+![PPO vs LQR performance](assets/videos/drake_quadrotor_lqr.png)
 
-- PPO has shown promising stabilization but struggles with precise hovering.
-- LQR provides better immediate stability but lacks adaptability
-- Tuning is in progress to improve PPO convergence
-- pydrake seems to run faster but results are less promising so far. Our LQR controller is functioning and uses meshcat for visualization
-- pyflyt runs slower, but the results are more promising so far, (the training loss at least decreases). It also allows us to save the renderings as RGB arrays, similar to the environments from exercise 2
-
-![Training Loss for both environments](assets/images/image6.png)
-
-![Pyflyt training loss with default hyperparams](assets/images/image2.png)
-
-![Pyflyt training reward with default hyperparams](assets/images/image2.png)
-
+PPO policy generalizes better from offset starts compared to LQR (PPO on left, LQR on right)
 
 ## References
 
-- Stable-baselines3: PPO implementation
-- PyFlyt and PyDrake: Quadrotor simulation and control
-- Optuna: Hyperparameter tuning
-- Tensorboard: Training visualization
-- Github and Stackoverflow: Documentation and troubleshooting
+- Stable-Baselines3 (RL Library)
+- PyFlyt Documentation 
+- Drake Examples and LQR Baseline
+- OpenAI Gymnasium
