@@ -19,10 +19,10 @@ writer = SummaryWriter()
 
 # env = make_vec_env(lambda: FlattenWaypointEnv(gymnasium.make("PyFlyt/QuadX-Waypoints-v3", render_mode='human'), context_length=1), n_envs=1)
 
-env = make_vec_env(lambda: gymnasium.make("PyFlyt/QuadX-Hover-v4", render_mode='human'), n_envs=1)
+env = make_vec_env(lambda: gymnasium.make("PyFlyt/QuadX-Waypoints-v3", render_mode='human'), n_envs=1)
 
 
-model = PPO.load("ppo_quadrotor_stabilize_unvectorized")
+model = PPO.load("ppo_waypoints_model")
 rewards = []
 for episode in range(10):
     obs = env.reset()
