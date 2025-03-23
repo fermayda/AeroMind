@@ -18,7 +18,7 @@ experiment_logdir = f"runs/{experiment_name}_{datetime.now().strftime('%Y-%m-%d_
 
 
 def make_env():
-    env = gymnasium.make("PyFlyt/QuadX-Hover-v3", render_mode='rgb_array', flight_mode=-1, agent_hz=100)
+    env = gymnasium.make("PyFlyt/QuadX-Waypoints-v3", render_mode='rgb_array', flight_mode=-1, agent_hz=100)
     return env
 env = make_vec_env(make_env, n_envs=1)
 # Define a trigger function (e.g., record a video every 20,000 steps)

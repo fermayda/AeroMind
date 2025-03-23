@@ -17,6 +17,10 @@ parser.add_argument('--load', nargs='?', const='default_value', help="Load with 
 args = parser.parse_args()
 
 load_val: str | None = args.load
+
+# Example placeholder - setup for future waypoints env
+# env = FlattenWaypointEnv(gymnasium.make("PyFlyt/QuadX-Waypoints-v3"), context_length=1)
+
 # Quadrotor LQR example notebook:
 # https://deepnote.com/workspace/Underactuated-2ed1518a-973b-4145-bd62-1768b49956a8/project/096cffe7-416e-4d51-a471-5fd526ec8fab/notebook/quadrotor-ac8fa093ca5a4894a618ada316f2750b
 

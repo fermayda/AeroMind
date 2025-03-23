@@ -44,14 +44,11 @@ class QuadrotorEnv:
         def reward_fn(system: System, context: Context):
             state = system.get_output_port(0).Eval(context) 
             # print(state.shape, state[:3])
-            pos_err = np.linalg.norm(state[:3] - target_position)
-
-
-            yaw_rate = state[11]
-
+            current_waypoint = np.array([1.0, 1.0, 1.0])  # Replace with dynamic waypoint logic later
+            waypoint_err = np.linalg.norm(state[:3] - current_waypoint)
             
-            # combine position, yaw rate, and roll/pitch error
-            return 1-(pos_err + 0.01*yaw_rate**2 + np.linalg.norm(state[6:8]))
+            # Example: reward is negative distance to waypoint
+            return -waypoint_err
         
         def monitor_fn(context: Context) -> EventStatus:
             system = simulator.get_system()
