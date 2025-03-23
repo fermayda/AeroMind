@@ -23,6 +23,7 @@ env = make_vec_env(lambda: gymnasium.make("PyFlyt/QuadX-Waypoints-v3", render_mo
 
 
 model = PPO.load("ppo_waypoints_model")
+
 rewards = []
 for episode in range(10):
     obs = env.reset()
